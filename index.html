@@ -11,10 +11,11 @@
       --brand:#569cd6; --brand-2:#c586c0; --accent-green:#6a9955;
       --border:#3c3c3c; --shadow:0 4px 12px rgba(0,0,0,.5);
       --link:#4fc3f7; --link-hover:#ffcc80;
-      --lab-bg:#2a2a2a;
-      --open-bg:#ffffff; --open-text:#111827; --open-border:#e5e7eb;
-      --open-bg-hover:#f5f5f5; --open-border-hover:#d1d5db;
     }
+
+    /* ✅ overflow 방지 */
+    *, *::before, *::after { box-sizing: border-box; }
+
     html,body{height:100%}
     body{margin:0; font-family:Consolas,"Courier New",monospace; background:var(--bg); color:var(--text); line-height:1.6;}
     a:not(.btn){color:var(--link); text-decoration:underline}
@@ -27,12 +28,19 @@
     nav a{color:var(--link); margin-left:18px; font-weight:600; text-decoration:underline}
     nav a:hover{color:var(--link-hover)}
 
-    .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--border); border-radius:6px; color:var(--text); text-decoration:none; font-weight:700; background:#2d2d2d; transition:.15s ease;}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 14px; border:1px solid var(--border);
+      border-radius:6px; color:var(--text); text-decoration:none;
+      font-weight:700; background:#2d2d2d; transition:.15s ease;
+      width:auto; /* 기본 */
+    }
     .btn:hover{border-color:var(--brand); color:var(--brand)}
     .btn.block{display:block; width:100%; text-align:center}
 
     .hero{padding:80px 0 40px; position:relative}
-    .hero::before{content:""; position:absolute; top:0; left:0; width:100%; height:24px; background:var(--brand)}
+    /* ❌ 파란 막대바 제거 */
+    .hero::before{content:none}
     .hero h1{font-size:clamp(28px,5vw,44px); line-height:1.12; margin:40px 0 6px; color:var(--brand)}
     .hero p{margin:0 0 22px}
     .pill{padding:4px 8px; border-radius:999px; border:1px solid var(--border); color:var(--accent-green); font-size:13px; background:#2d2d2d}
@@ -45,13 +53,14 @@
     .section-title{font-size:20px; margin:8px 0 18px; color:var(--brand-2)}
     .panel{background:#1e1e1e; border:1px solid var(--border); border-radius:8px; padding:18px; box-shadow:var(--shadow)}
 
-    .labs{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px}
-    .labs li{background:var(--lab-bg); border:1px solid var(--border); border-radius:8px; padding:12px 14px}
+    /* ✅ 랩별 박스 제거: 심플 리스트 + 구분선 */
+    .labs{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:16px}
+    .labs li{padding:6px 0}
+    .labs li + li{border-top:1px solid var(--border); padding-top:16px}
     .labs h3{margin:0 0 8px; font-size:16px; color:var(--brand)}
     .labs p{margin:0 10px 10px 0}
     .labs .link{margin-top:10px}
-    .labs .btn{background:var(--open-bg); color:var(--open-text); border:1px solid var(--open-border)}
-    .labs .btn:hover{background:var(--open-bg-hover); border-color:var(--open-border-hover); color:var(--open-text)}
+    /* Open 버튼은 기본 .btn 스타일 사용 (Past Assignments와 동일) */
 
     .vlinks{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px}
 
@@ -70,11 +79,10 @@
       <div class="brand">
         <span>Dayeon Jung <small style="opacity:.6; font-weight:600">(22400661)</small></span>
       </div>
-      <!-- 목차 복원 -->
       <nav aria-label="Main links">
         <a href="#intro">Intro</a>
         <a href="#class-info">Class Info</a>
-        <a href="#hw-this-week">HW This Week</a>
+        <a href="#this-weeks-assignment">This Week’s Assignment</a>
         <a href="#past-assignments">Past Assignments</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -84,7 +92,7 @@
   <main class="container">
     <!-- HERO -->
     <section id="intro" class="hero">
-      <h1>Welcome to my website!!</h1>
+      <h1>Welcome to Dayeon’s Website!!</h1>
       <div class="about">
         <div>
           <p>I’m a sophomore at Handong Global University (CS/EE) learning frontend foundations with HTML, CSS, and JavaScript. This page collects my coursework and live deployments.</p>
@@ -103,9 +111,9 @@
       </div>
     </section>
 
-    <!-- HW THIS WEEK -->
-    <section id="hw-this-week">
-      <h2 class="section-title">HW This Week — Forms & Interactions</h2>
+    <!-- THIS WEEK'S ASSIGNMENT -->
+    <section id="this-weeks-assignment">
+      <h2 class="section-title">This Week’s Assignment — Forms & Interactions</h2>
       <div class="panel">
         <ul class="labs">
           <li>
