@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Developer Sample — Dayeon Jung (22400661)</title>
+  <meta name="description" content="OSS assignment developer sample page — Dayeon Jung" />
+  <style>
+    :root{
+      --bg:#1e1e1e; --panel:#252526; --text:#d4d4d4; --muted:#a0a0a0;
+      --brand:#569cd6; --brand-2:#c586c0; --accent-green:#6a9955;
+      --border:#3c3c3c; --shadow:0 4px 12px rgba(0,0,0,.5);
+      --link:#4fc3f7; --link-hover:#ffcc80;
+      --lab-bg:#2a2a2a;
+      --open-bg:#ffffff; --open-text:#111827; --open-border:#e5e7eb;
+      --open-bg-hover:#f5f5f5; --open-border-hover:#d1d5db;
+    }
+    html,body{height:100%}
+    body{margin:0; font-family:Consolas,"Courier New",monospace; background:var(--bg); color:var(--text); line-height:1.6;}
+    a:not(.btn){color:var(--link); text-decoration:underline}
+    a:not(.btn):hover{color:var(--link-hover)}
+    .container{width:min(1040px,92%); margin:0 auto}
+
+    header{position:sticky; top:0; z-index:50; background:var(--panel); border-bottom:1px solid var(--border)}
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    nav a{color:var(--link); margin-left:18px; font-weight:600; text-decoration:underline}
+    nav a:hover{color:var(--link-hover)}
+
+    .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid var(--border); border-radius:6px; color:var(--text); text-decoration:none; font-weight:700; background:#2d2d2d; transition:.15s ease;}
+    .btn:hover{border-color:var(--brand); color:var(--brand)}
+    .btn.block{display:block; width:100%; text-align:center}
+
+    .hero{padding:80px 0 40px; position:relative}
+    .hero::before{content:""; position:absolute; top:0; left:0; width:100%; height:24px; background:var(--brand)}
+    .hero h1{font-size:clamp(28px,5vw,44px); line-height:1.12; margin:40px 0 6px; color:var(--brand)}
+    .hero p{margin:0 0 22px}
+    .pill{padding:4px 8px; border-radius:999px; border:1px solid var(--border); color:var(--accent-green); font-size:13px; background:#2d2d2d}
+
+    .about{display:flex; align-items:center; justify-content:space-between; gap:20px}
+    .about>div{flex:1}
+    .avatar{width:120px; height:120px; border-radius:50%; object-fit:cover; border:2px solid var(--brand); box-shadow:var(--shadow); margin-left:auto; flex:0 0 auto}
+
+    section{padding:28px 0 8px}
+    .section-title{font-size:20px; margin:8px 0 18px; color:var(--brand-2)}
+    .panel{background:#1e1e1e; border:1px solid var(--border); border-radius:8px; padding:18px; box-shadow:var(--shadow)}
+
+    .labs{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px}
+    .labs li{background:var(--lab-bg); border:1px solid var(--border); border-radius:8px; padding:12px 14px}
+    .labs h3{margin:0 0 8px; font-size:16px; color:var(--brand)}
+    .labs p{margin:0 10px 10px 0}
+    .labs .link{margin-top:10px}
+    .labs .btn{background:var(--open-bg); color:var(--open-text); border:1px solid var(--open-border)}
+    .labs .btn:hover{background:var(--open-bg-hover); border-color:var(--open-border-hover); color:var(--open-text)}
+
+    .vlinks{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px}
+
+    footer{margin:32px 0 60px; color:var(--muted); font-size:14px}
+
+    @media (max-width:860px){
+      .about{display:flex; align-items:center; justify-content:space-between; gap:20px}
+      .about>div{flex:1}
+      .avatar{width:200px; height:200px; border-radius:50%; object-fit:cover; border:1px solid white; box-shadow:var(--shadow); margin-left:20px; flex:0 0 auto}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span>Dayeon Jung <small style="opacity:.6; font-weight:600">(22400661)</small></span>
+      </div>
+      <!-- 목차 복원 -->
+      <nav aria-label="Main links">
+        <a href="#intro">Intro</a>
+        <a href="#class-info">Class Info</a>
+        <a href="#hw-this-week">HW This Week</a>
+        <a href="#past-assignments">Past Assignments</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section id="intro" class="hero">
+      <h1>Welcome to my website!!</h1>
+      <div class="about">
+        <div>
+          <p>I’m a sophomore at Handong Global University (CS/EE) learning frontend foundations with HTML, CSS, and JavaScript. This page collects my coursework and live deployments.</p>
+          <span class="pill">OSS · HTML · CSS · JavaScript</span>
+        </div>
+        <img class="avatar" src="profile2.jpeg" alt="Photo of Dayeon Jung" />
+      </div>
+    </section>
+
+    <!-- CLASS INFO -->
+    <section id="class-info">
+      <h2 class="section-title">Class Info</h2>
+      <div class="panel">
+        <p>This portfolio is part of Professor Soyeon Jang’s block-plan course:
+          <strong>Open Source Studio & Web Service Development</strong>. The work focuses on practicing HTML/CSS/JS and deploying a live site via GitHub + Netlify.</p>
+      </div>
+    </section>
+
+    <!-- HW THIS WEEK -->
+    <section id="hw-this-week">
+      <h2 class="section-title">HW This Week — Forms & Interactions</h2>
+      <div class="panel">
+        <ul class="labs">
+          <li>
+            <h3>Lab 1 — HTML Only</h3>
+            <p>Build a form using <em>pure HTML</em> (no CSS/JS). Required: <code>input[text|radio|checkbox|date]</code>, <code>select</code>, <code>textarea</code>. Optional: <code>fieldset</code>, <code>legend</code>, <code>optgroup</code>, <code>input[color]</code>, <code>datalist</code>.</p>
+            <div class="link"><a class="btn block" href="form1.html">Open: form1.html</a></div>
+          </li>
+          <li>
+            <h3>Lab 2 — Form CSS</h3>
+            <p>Copy Lab 1 as <code>form1_css.html</code> and apply layout/styling (spacing, alignment, custom radio/checkbox, focus states).</p>
+            <div class="link"><a class="btn block" href="form1_css.html">Open: form1_css.html</a></div>
+          </li>
+          <li>
+            <h3>Lab 3 — JavaScript Basics</h3>
+            <p>In <code>form1_js.html</code>, add validation and events (<code>alert()</code>, <code>confirm()</code>, <code>onchange</code>, <code>onclick</code>, <code>onkeydown</code>).</p>
+            <div class="link"><a class="btn block" href="form1_js.html">Open: form1_js.html</a></div>
+          </li>
+          <li>
+            <h3>Lab 4 — Dynamic Page</h3>
+            <p>In <code>js_dynamic.html</code>, add items to a list via an Add button (and clear input), and remove items via a Delete button.</p>
+            <div class="link"><a class="btn block" href="js_dynamic.html">Open: js_dynamic.html</a></div>
+          </li>
+          <li>
+            <h3>Lab 5 — Integration Practice</h3>
+            <p>Update <code>form_practice.html</code>: theme (sky-blue background #e0f7fa, blue buttons #2196f3), custom radio hover, horizontal checkboxes, default dropdown = Developer, required fields + password ≥ 8 chars.</p>
+            <div class="link"><a class="btn block" href="form_practice.html">Open: form_practice.html</a></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PAST ASSIGNMENTS -->
+    <section id="past-assignments">
+      <h2 class="section-title">Past Assignments</h2>
+      <div class="panel">
+        <ul class="vlinks">
+          <li><a class="btn block" href="https://aquamarine-muffin-dbac03.netlify.app/" target="_blank" rel="noopener noreferrer">Assignment 1 — Live Site</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2 class="section-title">Contact</h2>
+      <div class="panel">
+        <p>📧 <a href="mailto:jyeon573@gmail.com">jyeon573@gmail.com</a></p>
+        <p>💬 KakaoTalk ID: <strong>Ampoule</strong></p>
+      </div>
+    </section>
+
+    <footer>
+      <p>© <span id="year"></span> Dayeon Jung (22400661) — OSS Assignment Page</p>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
