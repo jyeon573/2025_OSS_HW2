@@ -1,240 +1,424 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <title>Checkout form (HTML-only clone)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Cloned (HTML only) from: https://getbootstrap.com/docs/5.2/examples/checkout/ -->
-    <style>
-        #header {
-            text-align: center;
-            padding: 24px 0;
-        }
+  <meta charset="utf-8">
+  <title>Checkout form (HTML-only clone)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
+      color: #212529;
+      background: #f8f9fa;
+      line-height: 1.5;
+      padding: 0 20px;
+    }
 
-        #container {
-            display: flex;
-            /* 원래라면 밑으로 쌓이는데 가로로 배치 */
-            gap: 20px;
-            /* 상자 간의 간격 */
-        }
-        
-    </style>
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+    }
 
+    #header {
+      text-align: center;
+      padding: 32px 0 16px;
+    }
+
+    #header h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    #header p {
+      margin: 0;
+      color: #6c757d;
+    }
+
+    #container {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    #rest {
+      flex: 1 1 640px;
+    }
+
+    #cart {
+      flex: 0 0 320px;
+    }
+
+    section {
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+    }
+
+    form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select {
+      height: 40px;
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    input::placeholder {
+      color: #adb5bd;
+    }
+
+    /* Username: 접두어(@) */
+    .input-with-prefix {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+    }
+
+    .input-with-prefix span {
+      display: inline-grid;
+      place-items: center;
+      height: 40px;
+      padding: 0 10px;
+      background: #e9ecef;
+      color: #6c757d;
+      border: 1px solid #ced4da;
+      border-right: 0;
+      border-radius: 6px 0 0 6px;
+    }
+
+    .input-with-prefix input {
+      border: 1px solid #ced4da;
+      border-radius: 0 6px 6px 0;
+      height: 40px;
+    }
+
+    /* 체크박스/라디오 */
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #495057;
+    }
+
+    input[type="checkbox"], input[type="radio"] {
+      width: 16px;
+      height: 16px;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid #e9ecef;
+      margin: 8px 0;
+    }
+
+    /* 버튼 */
+    button[type="submit"] {
+      border: 0;
+      background: #0d6efd;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 6px;
+      padding: 12px 16px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      filter: brightness(.95);
+    }
+
+    /* Cart 스타일 */
+    #your-cart-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #your-cart-title span {
+      margin-left: auto;
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: #0d6efd;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    #cart ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #cart li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 16px;
+      border-top: 1px solid #dee2e6;
+    }
+
+    #cart li:first-child {
+      border-top: 0;
+    }
+
+    #cart small {
+      color: #6c757d;
+    }
+
+    #cart li:nth-child(4) {
+      border-left: 4px solid #20c997;
+    }
+
+    #cart li:last-child span {
+      color: #6c757d;
+    }
+
+    #cart li:last-child strong {
+      font-size: 16px;
+    }
+
+    #cart form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    #cart input[type="text"] {
+      height: 38px;
+    }
+
+    #cart button {
+      height: 38px;
+      border: 1px solid #0d6efd;
+      background: #0d6efd;
+      color: #fff;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      margin: 20px 0 40px;
+      color: #6c757d;
+    }
+
+  </style>
 </head>
-
 <body>
-    <main>
-        <!-- Header -->
-        <section id="header">
-            <h1>Checkout form</h1>
-            <p>Below is an example form built entirely with form controls. Each required form group has a validation
-                state that can be triggered by attempting to submit the form without completing it.</p>
-        </section>
-        <hr>
+  <main>
+    <!-- Header -->
+    <section id="header">
+      <h1>Checkout form</h1>
+      <p>Below is an example form built entirely with form controls. Each required form group has a validation
+        state that can be triggered by attempting to submit the form without completing it.</p>
+    </section>
 
-        <div id="container">
-            <!-- Sidebar: Your cart -->
-            <div id="cart">
-                <section aria-labelledby="your-cart-title">
-                    <h2 id="your-cart-title">Your cart <span>(3)</span></h2>
-                    <ul>
-                        <li>
-                            <div>
-                                <strong>Product name</strong><br>
-                                <small>Brief description</small>
-                            </div>
-                            <span>$12</span>
-                        </li>
-                        <li>
-                            <div>
-                                <strong>Second product</strong><br>
-                                <small>Brief description</small>
-                            </div>
-                            <span>$8</span>
-                        </li>
-                        <li>
-                            <div>
-                                <strong>Third item</strong><br>
-                                <small>Brief description</small>
-                            </div>
-                            <span>$5</span>
-                        </li>
-                        <li>
-                            <div>
-                                <strong>Promo code</strong><br>
-                                <small>EXAMPLECODE</small>
-                            </div>
-                            <span>−$5</span>
-                        </li>
-                        <li>
-                            <span>Total (USD)</span>
-                            <strong>$20</strong>
-                        </li>
-                    </ul>
-
-                    <!-- Promo code form -->
-                    <form action="#" method="post">
-                        <label for="promo">Promo code</label>
-                        <input id="promo" name="promo" type="text" placeholder="Promo code">
-                        <button type="submit">Redeem</button>
-                    </form>
-                </section>
+    <div id="container">
+      <!-- Billing form -->
+      <div id="rest">
+        <section aria-labelledby="billing-title">
+          <h2 id="billing-title">Billing address</h2>
+          <form>
+            <div class="form-group">
+              <label for="firstName">First name</label>
+              <input id="firstName" name="firstName" type="text" required>
             </div>
+
+            <div class="form-group">
+              <label for="lastName">Last name</label>
+              <input id="lastName" name="lastName" type="text" required>
+            </div>
+
+            <div class="form-group">
+              <label for="username">Username</label>
+              <div class="input-with-prefix">
+                <span>@</span>
+                <input id="username" name="username" type="text" placeholder="Username" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email <span>(Optional)</span></label>
+              <input id="email" name="email" type="email" placeholder="you@example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input id="address" name="address" type="text" placeholder="1234 Main St" required>
+            </div>
+
+            <div class="form-group">
+              <label for="address2">Address 2 <span>(Optional)</span></label>
+              <input id="address2" name="address2" type="text" placeholder="Apartment or suite">
+            </div>
+
+            <div class="form-group">
+              <label for="country">Country</label>
+              <select id="country" name="country" required>
+                <option value="">Choose...</option>
+                <option>South Korea</option>
+                <option>United States</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="state">State</label>
+              <select id="state" name="state" required>
+                <option value="">Choose...</option>
+                <option>Seoul</option>
+                <option>Pohang</option>
+                <option>California</option>
+                <option>Mississippi</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="zip">Zip</label>
+              <input id="zip" name="zip" type="text" required>
+            </div>
+
             <hr>
 
-            <!-- Billing form (main form) -->
-            <div id="rest">
-                <section aria-labelledby="billing-title">
-                    <h2 id="billing-title">Billing address</h2>
+            <label class="choice">
+              <input id="same-address" name="sameAddress" type="checkbox">
+              Shipping address is the same as my billing address
+            </label>
 
-                    <form action="#" method="post">
-                        <fieldset>
-                            <legend>Basic info</legend>
+            <label class="choice">
+              <input id="save-info" name="saveInfo" type="checkbox">
+              Save this information for next time
+            </label>
 
-                            <div>
-                                <label for="firstName">First name</label>
-                                <input id="firstName" name="firstName" type="text" required>
-                            </div>
+            <hr>
 
-                            <div>
-                                <label for="lastName">Last name</label>
-                                <input id="lastName" name="lastName" type="text" required>
-                            </div>
+            <h2 id="payment-title">Payment</h2>
 
-                            <label for="username">Username</label>
-                            <div>
-                                <span>@</span>
-                                <input id="username" name="username" type="text" placeholder="Username" required>
-                            </div>
+            <label class="choice">
+              <input id="credit" name="paymentMethod" type="radio" value="credit" checked required>
+              Credit card
+            </label>
 
-                            <div>
-                                <label for="email">Email <span>(Optional)</span></label>
-                                <input id="email" name="email" type="email" placeholder="you@example.com">
-                            </div>
+            <label class="choice">
+              <input id="debit" name="paymentMethod" type="radio" value="debit" required>
+              Debit card
+            </label>
 
-                            <div>
-                                <label for="address">Address</label>
-                                <input id="address" name="address" type="text" placeholder="1234 Main St" required>
-                            </div>
+            <label class="choice">
+              <input id="paypal" name="paymentMethod" type="radio" value="paypal" required>
+              PayPal
+            </label>
 
-                            <div>
-                                <label for="address2">Address 2 <span>(Optional)</span></label>
-                                <input id="address2" name="address2" type="text" placeholder="Apartment or suite">
-                            </div>
-
-                            <div>
-                                <label for="country">Country</label>
-                                <select id="country" name="country" required>
-                                    <option value="">Choose...</option>
-                                    <option>South Korea</option>
-                                    <option>United States</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="state">State</label>
-                                <select id="state" name="state" required>
-                                    <option value="">Choose...</option>
-                                    <option>Seoul</option>
-                                    <option>Pohang</option>
-                                    <option>California</option>
-                                    <option>Mississippi</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="zip">Zip</label>
-                                <input id="zip" name="zip" type="text" required>
-                            </div>
-                        </fieldset>
-
-                        <hr>
-
-                        <div>
-                            <label>
-                                <input id="same-address" name="sameAddress" type="checkbox">
-                                Shipping address is the same as my billing address
-                            </label>
-                        </div>
-
-                        <div>
-                            <label>
-                                <input id="save-info" name="saveInfo" type="checkbox">
-                                Save this information for next time
-                            </label>
-                        </div>
-
-                        <hr>
-
-                        <fieldset>
-                            <legend>Payment</legend>
-
-                            <div>
-                                <label>
-                                    <input id="credit" name="paymentMethod" type="radio" value="credit" checked
-                                        required>
-                                    Credit card
-                                </label>
-                            </div>
-
-                            <div>
-                                <label>
-                                    <input id="debit" name="paymentMethod" type="radio" value="debit" required>
-                                    Debit card
-                                </label>
-                            </div>
-
-                            <div>
-                                <label>
-                                    <input id="paypal" name="paymentMethod" type="radio" value="paypal" required>
-                                    PayPal
-                                </label>
-                            </div>
-
-                            <div>
-                                <label for="cc-name">Name on card</label>
-                                <input id="cc-name" name="ccName" type="text" required>
-                                <small>Full name as displayed on card</small>
-                            </div>
-
-                            <div>
-                                <label for="cc-number">Credit card number</label>
-                                <input id="cc-number" name="ccNumber" type="text" required>
-                            </div>
-
-                            <div>
-                                <label for="cc-expiration">Expiration</label>
-                                <input id="cc-expiration" name="ccExpiration" type="text" required>
-                            </div>
-
-                            <div>
-                                <label for="cc-cvv">CVV</label>
-                                <input id="cc-cvv" name="ccCvv" type="text" required>
-                            </div>
-                        </fieldset>
-
-                        <hr>
-
-                        <button type="submit">Continue to checkout</button>
-                    </form>
-                </section>
+            <div class="form-group">
+              <label for="cc-name">Name on card</label>
+              <input id="cc-name" name="ccName" type="text" required>
+              <small class="help">Full name as displayed on card</small>
             </div>
-        </div>
 
-        <hr>
+            <div class="form-group">
+              <label for="cc-number">Credit card number</label>
+              <input id="cc-number" name="ccNumber" type="text" required>
+            </div>
 
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2017–2022 Company Name</p>
-            <nav>
-                <a href="#">Privacy</a> ·
-                <a href="#">Terms</a> ·
-                <a href="#">Support</a>
-            </nav>
-        </footer>
-    </main>
+            <div class="form-group">
+              <label for="cc-expiration">Expiration</label>
+              <input id="cc-expiration" name="ccExpiration" type="text" required>
+            </div>
 
+            <div class="form-group">
+              <label for="cc-cvv">CVV</label>
+              <input id="cc-cvv" name="ccCvv" type="text" required>
+            </div>
+
+            <hr>
+
+            <button type="submit">Continue to checkout</button>
+          </form>
+        </section>
+      </div>
+
+      <!-- Cart -->
+      <div id="cart">
+        <section aria-labelledby="your-cart-title">
+          <h2 id="your-cart-title">Your cart <span>3</span></h2>
+          <ul>
+            <li>
+              <div>
+                <strong>Product name</strong><br>
+                <small>Brief description</small>
+              </div>
+              <span>$12</span>
+            </li>
+            <li>
+              <div>
+                <strong>Second product</strong><br>
+                <small>Brief description</small>
+              </div>
+              <span>$8</span>
+            </li>
+            <li>
+              <div>
+                <strong>Third item</strong><br>
+                <small>Brief description</small>
+              </div>
+              <span>$5</span>
+            </li>
+            <li>
+              <div>
+                <strong>Promo code</strong><br>
+                <small>EXAMPLECODE</small>
+              </div>
+              <span>−$5</span>
+            </li>
+            <li>
+              <span>Total (USD)</span>
+              <strong>$20</strong>
+            </li>
+          </ul>
+
+          <form action="#" method="post">
+            <label for="promo">Promo code</label>
+            <input id="promo" name="promo" type="text" placeholder="Promo code">
+            <button type="submit">Redeem</button>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2017–2022 Company Name</p>
+      <nav>
+        <a href="#">Privacy</a> ·
+        <a href="#">Terms</a> ·
+        <a href="#">Support</a>
+      </nav>
+    </footer>
+  </main>
 </body>
-
 </html>
