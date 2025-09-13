@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Checkout form (HTML-only clone)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#f8f9fa;
+      --text:#212529;
+      --muted:#6c757d;
+      --border:#ced4da;
+      --line:#e9ecef;
+      --primary:#0d6efd;      /* focus 블루 */
+      --success:#198754;      /* 초록 텍스트 */
+      --danger:#dc3545;       /* 에러 레드 */
+      --darkgray:#5c636a;     /* Redeem 버튼 */
+      --radius:8px;
+      --field-h:34px;
+      --gap:14px;
+      --fs:14px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",Arial,sans-serif;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.45;
+      padding:0 12px;
+      font-size:var(--fs);
+    }
+    main{ max-width:700px; margin:0 auto; width:100% }
+
+    /* Header */
+    #header{ text-align:center; padding:28px 0 16px }
+    .logo{
+      display:inline-grid; place-items:center;
+      width:52px; height:52px; margin:0 auto 10px;
+      background:#6f42c1; color:#fff; font-weight:800; font-size:28px; border-radius:16px;
+    }
+    #header h1{ margin:0 0 6px; font-size:26px }
+    #header p{ margin:0; color:var(--muted) }
+
+    /* Layout */
+    #container{ display:flex; gap:20px; align-items:flex-start }
+    #rest{ flex:2; min-width:0 }
+    #cart{ flex:1; min-width:220px }
+
+    section{ padding:16px; margin-bottom:18px }
+    h2{ margin:0 0 12px; font-size:18px; font-weight:600 } /* 섹션 제목만 볼드 */
+
+    form{ display:grid; gap:var(--gap) }
+    .row-2{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap) }
+    .row-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:var(--gap) }
+
+    .form-group{ display:flex; flex-direction:column; gap:6px; position:relative }
+    label{ font-weight:400 }
+    small.help{ color:var(--muted); font-weight:400 }
+
+    /* 인풋 기본/포커스 */
+    input[type="text"], input[type="email"], select{
+      height:var(--field-h); width:100%; padding:6px 10px;
+      border:1px solid var(--border); border-radius:6px; background:#fff; font-weight:400;
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    input::placeholder{ color:#adb5bd }
+    input:focus, select:focus{
+      outline:0; border-color:var(--primary); box-shadow:0 0 0 2px rgba(13,110,253,.15);
+    }
+
+    /* Username with @ */
+    .input-with-prefix{
+      display:grid; grid-template-columns:auto 1fr; align-items:stretch; width:100%;
+      position:relative; /* 에러 아이콘 포지셔닝 */
+    }
+    .input-with-prefix span{
+      display:inline-grid; place-items:center; padding:0 10px;
+      background:#e9ecef; color:#6c757d; border:1px solid var(--border); border-right:0;
+      border-radius:6px 0 0 6px; height:var(--field-h); font-weight:400;
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    .input-with-prefix input{
+      border:1px solid var(--border); border-radius:0 6px 6px 0; height:var(--field-h);
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    .input-with-prefix:focus-within span{ border-color:var(--primary); box-shadow:0 0 0 2px rgba(13,110,253,.15) }
+    .input-with-prefix:focus-within input{ border-color:var(--primary); box-shadow:0 0 0 2px rgba(13,110,253,.15) }
+
+    .choice{ display:flex; align-items:center; gap:8px; color:#495057; font-weight:400 }
+    input[type="checkbox"], input[type="radio"]{ width:16px; height:16px }
+    hr{ border:0; border-top:1px solid var(--line); margin:6px 0 }
+
+    button[type="submit"]{
+      border:0; background:var(--primary); color:#fff; font-weight:600;
+      border-radius:6px; padding:10px 14px; cursor:pointer
+    }
+    button[type="submit"]:hover{ filter:brightness(.95) }
+
+    /* Cart */
+    #your-cart-title{ display:flex; align-items:center; gap:8px }
+    #your-cart-title .badge{
+      margin-left:auto; display:inline-grid; place-items:center;
+      min-width:36px; height:22px; padding:0 8px; border-radius:999px;
+      background:var(--primary); color:#fff; font-weight:600; font-size:12px;
+    }
+    #cart ul{ list-style:none; padding:0; margin:0 0 12px; border:1px solid #dee2e6; border-radius:var(--radius); overflow:hidden; background:#fff }
+    #cart li{ display:flex; justify-content:space-between; gap:12px; padding:10px 14px; border-top:1px solid #dee2e6; background:#fff; font-weight:400 }
+    #cart li:first-child{ border-top:0 }
+    #cart small{ color:var(--muted); font-weight:400 }
+    #cart li:last-child span{ color:var(--muted) }
+    #cart li.promo{ background:var(--bg) }
+    #cart li.promo strong, #cart li.promo small, #cart li.promo span{ color:var(--success); font-weight:400 }
+
+    /* Promo 입력 블록 */
+    .promo-wrap{ background:#fff; border:1px solid #dee2e6; border-radius:var(--radius); padding:10px 12px; display:grid; gap:8px }
+    .promo-field{ display:grid; grid-template-columns:1fr auto; gap:0; background:transparent }
+    .promo-field input{
+      height:36px; padding:8px 12px; background:var(--bg); color:var(--success);
+      border:1px solid var(--border); border-right:0; outline:none; font-weight:400; border-radius:6px 0 0 6px;
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    .promo-field:focus-within input{ border-color:var(--primary); box-shadow:0 0 0 2px rgba(13,110,253,.15) }
+    .promo-field button{
+      height:36px; padding:0 14px; background:var(--darkgray); color:#fff; font-weight:600;
+      border:1px solid #ced4da; border-left:0; border-radius:0 6px 6px 0; cursor:pointer
+    }
+
+    /* ===== 에러 표시 ===== */
+    .invalid{ border-color:var(--danger) !important; box-shadow:0 0 0 2px rgba(220,53,69,.15) !important }
+    .error-msg{ color:var(--danger); font-size:12px; margin-top:4px; display:block }
+
+    /* 빨간 느낌표 아이콘 */
+    .icon-error{
+      position:absolute; right:8px; top:50%; transform:translateY(-50%);
+      width:20px; height:20px; border-radius:50%;
+      border:2px solid var(--danger); color:var(--danger);
+      display:none; align-items:center; justify-content:center; font-weight:700; font-size:12px;
+      background:#fff;
+      pointer-events:none;
+    }
+    .icon-error.show{ display:flex }
+    /* select/일반 인풋 포지셔닝을 위해 래퍼 */
+    .control{ position:relative }
+
+    /* ====== Responsive ====== */
+    @media (max-width: 900px){ body{ padding:0 10px } #container{ gap:16px } }
+    @media (max-width: 500px){
+      body{ padding:0 8px } #container{ flex-direction:column }
+      #cart{ order:1; min-width:0 } #rest{ order:2 }
+      .row-2, .row-3{ grid-template-columns:1fr }
+      .promo-field input, .promo-field button{ height:34px }
+      input[type="text"], input[type="email"], select{ height:32px }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Header -->
+    <section id="header" aria-labelledby="title">
+      <div class="logo" aria-hidden="true">B</div>
+      <h1 id="title">Checkout form</h1>
+      <p>Below is an example form built entirely with form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
+    </section>
+
+    <div id="container">
+      <!-- Billing form -->
+      <div id="rest">
+        <section aria-labelledby="billing-title">
+          <h2 id="billing-title">Billing address</h2>
+
+          <!-- 기본 브라우저 validation 메시지 차단 -->
+          <form id="checkout-form" novalidate onsubmit="return beforeSubmit(event)">
+            <div class="row-2">
+              <div class="form-group">
+                <label for="firstName">First name</label>
+                <div class="control">
+                  <input id="firstName" name="firstName" type="text" required />
+                  <span class="icon-error" aria-hidden="true">!</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last name</label>
+                <div class="control">
+                  <input id="lastName" name="lastName" type="text" required />
+                  <span class="icon-error" aria-hidden="true">!</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="username">Username</label>
+              <div class="input-with-prefix">
+                <span>@</span>
+                <!-- username: 흰 인풋만 붉게 처리 -->
+                <input id="username" name="username" type="text" placeholder="Username" required onkeydown="usernameKeydown(event)" />
+                <span class="icon-error" aria-hidden="true">!</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email <span>(Optional)</span></label>
+              <div class="control">
+                <input id="email" name="email" type="email" placeholder="you@example.com" />
+                <span class="icon-error" aria-hidden="true">!</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Address</label>
+              <div class="control">
+                <input id="address" name="address" type="text" placeholder="1234 Main St" required />
+                <span class="icon-error" aria-hidden="true">!</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="address2">Address 2 <span>(Optional)</span></label>
+              <div class="control">
+                <input id="address2" name="address2" type="text" placeholder="Apartment or suite" />
+                <span class="icon-error" aria-hidden="true">!</span>
+              </div>
+            </div>
+
+            <div class="row-3">
+              <div class="form-group">
+                <label for="country">Country</label>
+                <div class="control">
+                  <select id="country" name="country" required onchange="handleCountryChange(this.value)">
+                    <option value="">Choose...</option>
+                    <option>South Korea</option>
+                    <option>United States</option>
+                  </select>
+                  <span class="icon-error" aria-hidden="true">!</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="state">State</label>
+                <div class="control">
+                  <select id="state" name="state" required>
+                    <option value="">Choose...</option>
+                    <option>Seoul</option>
+                    <option>Pohang</option>
+                    <option>California</option>
+                    <option>Mississippi</option>
+                  </select>
+                  <span class="icon-error" aria-hidden="true">!</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="zip">Zip</label>
+                <div class="control">
+                  <input id="zip" name="zip" type="text" required />
+                  <span class="icon-error" aria-hidden="true">!</span>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+            <label class="choice"><input id="same-address" type="checkbox" />Shipping address is the same as my billing address</label>
+            <label class="choice"><input id="save-info" type="checkbox" />Save this information for next time</label>
+            <hr />
+
+            <h2 id="payment-title">Payment</h2>
+            <label class="choice"><input name="paymentMethod" type="radio" value="credit" checked required />Credit card</label>
+            <label class="choice"><input name="paymentMethod" type="radio" value="debit" required />Debit card</label>
+            <label class="choice"><input name="paymentMethod" type="radio" value="paypal" required />PayPal</label>
+
+            <div class="row-2">
+              <div class="form-group">
+                <label for="cc-name">Name on card</label>
+                <div class="control">
+                  <input id="cc-name" type="text" required />
+                  <span class="icon-error" aria-hidden="true">!</span>
+                </div>
+                <small class="help">Full name as displayed on card</small>
+              </div>
+              <div class="form-group">
+                <label for="cc-number">Credit card number</label>
+                <div class="control">
+                  <input id="cc-number" type="text" required />
+                  <span class="icon-error" aria-hidden="true">!</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row-2">
+              <div class="form-group">
+                <label for="cc-expiration">Expiration</label>
+                <div class="control">
+                  <input id="cc-expiration" type="text" required />
+                  <span class="icon-error" aria-hidden="true">!</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="cc-cvv">CVV</label>
+                <div class="control">
+                  <input id="cc-cvv" type="text" required />
+                  <span class="icon-error" aria-hidden="true">!</span>
+                </div>
+              </div>
+            </div>
+
+            <hr />
+            <button type="submit">Continue to checkout</button>
+          </form>
+        </section>
+      </div>
+
+      <!-- Cart -->
+      <div id="cart">
+        <section aria-labelledby="your-cart-title">
+          <h2 id="your-cart-title">Your cart <span class="badge">3</span></h2>
+          <ul>
+            <li>
+              <div><span>Product name</span><br><small>Brief description</small></div>
+              <span>$12</span>
+            </li>
+            <li>
+              <div><span>Second product</span><br><small>Brief description</small></div>
+              <span>$8</span>
+            </li>
+            <li>
+              <div><span>Third item</span><br><small>Brief description</small></div>
+              <span>$5</span>
+            </li>
+            <li class="promo">
+              <div><span>Promo code</span><br><small id="applied-code">EXAMPLECODE</small></div>
+              <span>−$5</span>
+            </li>
+            <li>
+              <span>Total (USD)</span><span>$20</span>
+            </li>
+          </ul>
+
+          <div class="promo-wrap">
+            <div class="promo-field">
+              <input id="promo" type="text" placeholder="Promo code" onkeydown="promoKeydown(event)" />
+              <button type="button" onclick="redeemPromo()" onmouseover="showHint()" onmouseout="hideHint()">Redeem</button>
+            </div>
+            <div id="promo-hint" class="hint" aria-live="polite">Tip: Press <b>Enter</b> to redeem your code.</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2017–2022 Company Name</p>
+      <nav><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Support</a></nav>
+    </footer>
+  </main>
+
+  <script>
+    /* 라벨 텍스트 */
+    function getLabelText(form, inputEl){
+      if(!inputEl) return '';
+      const id = inputEl.id;
+      if(id){
+        const label = form.querySelector('label[for="'+id+'"]');
+        if(label) return label.textContent.replace(/\s*\(.*\)\s*/,'').trim();
+      }
+      if(inputEl.name === 'paymentMethod') return 'Payment method';
+      return (id || inputEl.name || 'This field');
+    }
+
+    /* 에러 메시지/아이콘 정리 */
+    function clearErrors(form){
+      form.querySelectorAll('.error-msg').forEach(e=>e.remove());
+      form.querySelectorAll('.invalid').forEach(el=>el.classList.remove('invalid'));
+      form.querySelectorAll('.icon-error').forEach(i=>i.classList.remove('show'));
+      form.querySelectorAll('[aria-invalid="true"]').forEach(el=>el.setAttribute('aria-invalid','false'));
+    }
+
+    function insertError(afterNode, msg){
+      const small = document.createElement('small');
+      small.className = 'error-msg';
+      small.textContent = msg;
+      afterNode.insertAdjacentElement('afterend', small);
+      return small;
+    }
+
+    /* 에러 표시: 인풋/셀렉트 본체에만 붉은 테두리, 아이콘은 오른쪽 */
+    function markInvalid(inputEl, labelText){
+      const formGroup = inputEl.closest('.form-group');
+      let container = inputEl.closest('.input-with-prefix') || inputEl.closest('.control') || formGroup || inputEl.parentElement;
+
+      inputEl.classList.add('invalid');
+      inputEl.setAttribute('aria-invalid','true');
+
+      // 아이콘
+      let ico = container.querySelector('.icon-error');
+      if(!ico){
+        ico = document.createElement('span');
+        ico.className = 'icon-error show';
+        ico.setAttribute('aria-hidden','true');
+        ico.textContent = '!';
+        container.appendChild(ico);
+      }else{
+        ico.classList.add('show');
+      }
+
+      // 에러 메시지
+      const anchor = container;
+      const small = insertError(anchor, `${labelText} is required`);
+
+      // 수정 시 자동 해제
+      function clearIfFilled(){
+        if (String(inputEl.value || '').trim()){
+          inputEl.classList.remove('invalid');
+          inputEl.setAttribute('aria-invalid','false');
+          if (small && small.parentNode) small.remove();
+          if (ico) ico.classList.remove('show');
+          inputEl.removeEventListener('input', clearIfFilled);
+          inputEl.removeEventListener('change', clearIfFilled);
+        }
+      }
+      inputEl.addEventListener('input', clearIfFilled);
+      inputEl.addEventListener('change', clearIfFilled);
+    }
+
+    function validateForm(){
+      const form = document.getElementById('checkout-form');
+      clearErrors(form);
+
+      let errors = 0;
+      const req = ['#firstName','#lastName','#username','#address','#country','#state','#zip','#cc-name','#cc-number','#cc-expiration','#cc-cvv'];
+      req.forEach(sel=>{
+        const el = form.querySelector(sel);
+        if(el && !String(el.value || '').trim()){
+          markInvalid(el, getLabelText(form, el));
+          errors++;
+        }
+      });
+
+      // 라디오 그룹
+      const checked = form.querySelector('input[name="paymentMethod"]:checked');
+      if(!checked){
+        const firstRadio = form.querySelector('input[name="paymentMethod"]');
+        if(firstRadio){
+          // 라디오 그룹은 메시지만 노출
+          insertError(firstRadio.closest('.choice'), 'Payment method is required');
+          errors++;
+        }
+      }
+      return errors === 0;
+    }
+
+    function beforeSubmit(e){
+      e.preventDefault();
+      const ok = validateForm();
+      if(!ok){
+        alert('Please fix the highlighted fields.');
+        const firstInvalid = document.querySelector('.invalid') || document.querySelector('.error-msg');
+        if(firstInvalid){
+          firstInvalid.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+        return false;
+      }
+      if(!confirm('Proceed to checkout?')) return false;
+      alert('Submitted! (demo)');
+      return true;
+    }
+
+    /* 기존 이벤트 요구 */
+    function redeemPromo(){
+      const input = document.getElementById('promo');
+      const code = (input.value || '').trim();
+      if(!code){
+        alert('Enter a promo code first.');
+        input.focus();
+        return;
+      }
+      const applied = document.getElementById('applied-code');
+      if(applied) applied.textContent = code;
+      alert('Promo "' + code + '" applied (demo).');
+      input.value = '';
+      hideHint();
+    }
+    function handleCountryChange(val){ if(val){ alert('Country changed to: ' + val); } }
+    function showHint(){ document.getElementById('promo-hint')?.classList.add('show'); }
+    function hideHint(){ document.getElementById('promo-hint')?.classList.remove('show'); }
+    function promoKeydown(e){ if(e.key === 'Enter'){ e.preventDefault(); redeemPromo(); } }
+    function usernameKeydown(e){ if(e.key === ' '){ e.preventDefault(); alert('Username cannot contain spaces.'); } }
+  </script>
+</body>
+</html>
